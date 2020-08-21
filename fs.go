@@ -36,7 +36,7 @@ func NewClueFS(shadowDir string, tracer Tracer) (*ClueFS, error) {
 	return &ClueFS{shadowDir: shadowDir}, nil
 }
 
-func (fs *ClueFS) MountAndServe(mountpoint string, readonly bool) error {
+func (fs *ClueFS) MountAndServe(mountpoint string, readonly bool, cfg *Config) error {
 	// Mount the file system
 	fs.mountDir = mountpoint
 	if IsDebugActive() {
@@ -51,8 +51,13 @@ func (fs *ClueFS) MountAndServe(mountpoint string, readonly bool) error {
 	if readonly {
 		mountOpts = append(mountOpts, fuse.ReadOnly())
 	}
+	if cfg.GetAllowOther() {
+		mountOpts = append(mountOpts, fuse.AllowOther())
+		// mountOpts = append(mountOpts, fuse.AllowSUID())
+	}
 	conn, err := fuse.Mount(mountpoint, mountOpts...)
 	if err != nil {
+		i
 		return err
 	}
 	defer conn.Close()

@@ -64,12 +64,13 @@ func ParseArguments() (*Config, error) {
 		printUsage(os.Stderr, HelpShort)
 	}
 	var (
-		mount    string
-		shadow   string
-		outFile  string
-		readOnly bool
-		json     bool
-		csv      bool
+		mount      string
+		shadow     string
+		outFile    string
+		readOnly   bool
+		json       bool
+		csv        bool
+		allowother bool
 	)
 	flag.StringVar(&mount, "mount", "", "")
 	flag.StringVar(&shadow, "shadow", "", "")
@@ -77,6 +78,7 @@ func ParseArguments() (*Config, error) {
 	flag.BoolVar(&readOnly, "ro", false, "")
 	flag.BoolVar(&json, "json", false, "")
 	flag.BoolVar(&csv, "csv", false, "")
+	flag.BoolVar(&allowother, "allowother", false, "")
 	flag.Parse()
 	if !flag.Parsed() {
 		return nil, parseErr
@@ -100,6 +102,9 @@ func ParseArguments() (*Config, error) {
 	if err != nil {
 		errlog.Println(err)
 		return nil, err
+	}
+	if allowother {
+		config.SetAllowOther()
 	}
 	return config, nil
 }
@@ -290,6 +295,9 @@ OPTIONS:
 {{.Tab1}}Expose the shadow file system as a read-only file system.
 {{.Tab1}}Default: if this option is not specified, the file system is mounted in
 {{.Tab1}}read-write mode.
+
+{{.Sp3}}--allowother
+{{.Tab1}}Allow other users to access the file system.
 
 {{.Sp3}}--help
 {{.Tab1}}Show this help

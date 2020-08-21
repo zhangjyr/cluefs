@@ -54,3 +54,14 @@ func (c *Config) GetReadOnly() bool {
 	}
 	return false
 }
+
+func (c *Config) SetAllowOther() {
+	c.entries["allowother"] = "true"
+}
+
+func (c *Config) GetAllowOther() bool {
+	if c.entries["allowother"] == "true" {
+		return true
+	}
+	return false
+}

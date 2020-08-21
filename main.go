@@ -26,7 +26,7 @@ func main() {
 	}
 
 	// Mount and serve file system requests
-	if err = cfs.MountAndServe(conf.GetMountPoint(), conf.GetReadOnly()); err != nil {
+	if err = cfs.MountAndServe(conf.GetMountPoint(), conf.GetReadOnly(), conf); err != nil {
 		errlog.Printf("could not mount file system [%s]", err)
 		os.Exit(3)
 	}

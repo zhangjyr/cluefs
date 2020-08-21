@@ -28,3 +28,4 @@ cluefs
 .DS_Store
 *.tar.gz
 misc/
+.vscode
